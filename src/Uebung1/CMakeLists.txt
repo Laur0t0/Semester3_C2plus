@@ -1,6 +1,6 @@
 # specify that there is an executable and what sources it needs
 add_executable( Uebung1  
-    /Users/corvin/Documents/GitHub/Semester3_C2plus/src/Uebung1/Main-3.cpp 
+    /Users/corvin/Documents/GitHub/Semester3_C2plus/src/Uebung1/Main1.cpp 
     /Users/corvin/Documents/GitHub/Semester3_C2plus/src/Uebung1/MyString.cpp
 )
 

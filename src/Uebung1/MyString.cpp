@@ -1,31 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "MyString.h"
 
-/* Konstruktoren */
 
-MyString::MyString()
+/* avoid Visual Studio "depreciated/unsafe error" when using strcpy() */
+static char* my_strcpy(char* t, const char* s)
 {
-	/* initialisiere mit 0 */
-	length = 0;
-	char* text;
-}
+	char* p = t;
 
-MyString::MyString()
-{
-	
+	while ((*p++ = *s++) != '\0');
+
+	return(t);
 }
 
 
-/* Destruktor */
+/* Konstruktoren/Destruktor */
+
+MyString::MyString(const char* s)
+{
+	len = strlen(s);
+	sPtr = new char[len + 1];
+	if (sPtr == NULL)
+	{
+		fprintf(stderr, "ERROR: Kein Speicher\n");
+		exit(1);
+	}
+
+	/* avoid Visual Studio "depreciated/unsafe error" when using strcpy() */
+	my_strcpy(sPtr, s);
+}
+
+
+MyString::MyString(const MyString& s)
+{
+	len = s.len;
+	sPtr = new char[len + 1];
+	if (sPtr == NULL)
+	{
+		fprintf(stderr, "ERROR: Kein Speicher\n");
+		exit(1);
+	}
+
+	/* avoid Visual Studio "depreciated/unsafe error" when using strcpy() */
+	my_strcpy(sPtr, s.sPtr);
+}
+
 
 MyString::~MyString()
 {
-	/* keine Aktion notwendig */
+	delete[] sPtr;
 }
 
 
 /* Methoden */
 
-void MyString::print()
+void MyString::print() const
 {
-	print("Zaehler: %d\nNenner: %d\n", text, length);
+	printf(">%s<\n", sPtr);
+}
+
+
+int MyString::length() const
+{
+	return(len);
+}
+
+
+/* Operatoren */
+
+const MyString& MyString::operator = (const MyString& s)
+{
+	/* Zuweisung an sich selbst */
+	if (this == &s)
+	{
+		return(*this);
+	}
+
+	if (len != s.len)
+	{
+		delete[] sPtr;
+		len = s.len;
+		sPtr = new char[len + 1];
+		if (sPtr == NULL)
+		{
+			fprintf(stderr, "ERROR: Kein Speicher\n");
+			exit(1);
+		}
+	}
+	my_strcpy(sPtr, s.sPtr);
+
+	return(*this);
 }

@@ -1,17 +1,20 @@
+#pragma once
+
+
 class MyString
 {
-	/* kein Zugriff von aussen */
 private:
-	char text[101];
-	int length;
+	char *sPtr;
+	unsigned len;
 
-	/* oeffentliche Schnittstelle */
 public:
-	MyString();
-    MyString(char *);
-    print();
-    length(int);
-    ~MyString();
+	MyString(const char* = "");
+	MyString(const MyString&);
+	~MyString();
 
-	void print();
+	void print() const;
+	int length() const;
+
+	const MyString& operator = (const MyString&);
 };
+
